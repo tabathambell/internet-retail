@@ -45,3 +45,5 @@ Product.init(
 );
 
 module.exports = Product;
+
+// CATEGORY HAS MANY PRODUCT MODELS

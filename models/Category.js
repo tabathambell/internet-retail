@@ -31,3 +31,5 @@ Category.init(
 );
 
 module.exports = Category;
+
+// PRODUCT BELONGS IN CATEGORY
