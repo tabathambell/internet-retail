@@ -6,17 +6,14 @@ const { Tag, Product, ProductTag } = require('../../models');
 router.get('/', (req, res) => {
   // find all tags
   // be sure to include its associated Product data
-  ProductTag.findAll({
+  Tag.findAll({
     attributes: ['id', 'product_id', 'tag_id'],
-    order: [['DESC']],
-    include: [
-      {
-        model: Product,
-        attributes: ['id', 'product_name', 'price', 'stock', 'category_id']
-      }
-    ]
+    include: [{ 
+      model: Product,
+      through: ProductTag
+     }]
   })
-    .then(dbProductTagData => res.json(dbProductTagData))
+    .then(dbTagData => res.json(dbTagData))
     .catch(err => {
       console.log(err);
       res.status(500).json(err);
@@ -26,22 +23,20 @@ router.get('/', (req, res) => {
 router.get('/:id', (req, res) => {
   // find a single tag by its `id`
   // be sure to include its associated Product data
-  ProductTag.findOne({
+  Tag.findOne({
     where: { id: req.params.id },
     attributes: ['id', 'product_id', 'tag_id'],
-    include: [
-      {
-        model: Product,
-        attributes: ['id', 'product_name', 'price', 'stock', 'category_id']
-      }
-    ]
+    include: [{
+      model: Product,
+      through: ProductTag
+    }]
   })
-    .then(dbProductTagData => {
-      if (!dbProductTagData) {
+    .then(dbTagData => {
+      if (!dbTagData) {
         res.status(404).json({ message: 'No product found with this id' });
         return;
       }
-      res.json(dbProductTagData);
+      res.json(dbTagData);
     })
     .catch(err => {
       console.log(err);
@@ -52,9 +47,9 @@ router.get('/:id', (req, res) => {
 router.post('/', (req, res) => {
   // create a new tag
   Tag.create({
-    tag_id: req.body.tag_id
+    tag_name: req.body.tag_name
   })
-  .then(dbProductTagData => res.json(dbProductTagData))
+  .then(dbTagData => res.json(dbTagData))
   .catch(err => {
     console.log(err);
     res.status(500).json(err);
@@ -63,17 +58,17 @@ router.post('/', (req, res) => {
 
 router.put('/:id', (req, res) => {
   // update a tag's name by its `id` value
-  ProductTag.update(req.body, {
+  Tag.update(req.body, {
     where: {
       id: req.params.id
     }
   })
-  .then(dbProductTagData => {
-    if (!dbProductTagData[0]) {
+  .then(dbTagData => {
+    if (!dbTagData[0]) {
       res.status(404).json({ message: 'No product found with this id' });
       return;
     }
-    res.json(dbProductTagData);
+    res.json(dbTagData);
   })
   .catch(err => {
     console.log(err);
@@ -83,13 +78,13 @@ router.put('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
   // delete on tag by its `id` value
-  ProductTag.destroy({
+  Tag.destroy({
     where: {
       id: req.params.id
     }
   })
-  .then(dbProductTagData => {
-    if (!dbProductTagData) {
+  .then(dbTagData => {
+    if (!dbTagData) {
       res.status(404).json({ message: 'No tag found with this id' });
       return;
     }
