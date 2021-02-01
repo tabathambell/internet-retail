@@ -11,4 +11,4 @@ This project was fairly straight forward given that it was nearly a branch off f
 ## Link to Repository
 [Link to GitHub](https://github.com/tabathambell/internet-retail/)
 [Link to Heroku](https://tmb-internet-retail.herokuapp.com/)
-[Link to Walkthrough Video]()
+[Link to Walkthrough Video](https://youtu.be/JsDlQ62q8rw)
